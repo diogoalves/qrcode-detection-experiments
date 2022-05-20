@@ -1,0 +1,16 @@
+stages:
+  train:
+    cmd: python train.py > train.log
+    deps:
+    - data
+    - train.py
+    outs:
+    - metrics-loss.csv
+    - train.log
+  test:
+    cmd: python test.py > test.log
+    deps:
+    - test.py
+    outs:
+    - test.log
+    
