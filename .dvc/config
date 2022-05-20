@@ -1,0 +1,5 @@
+[core]
+    autostage = true
+    remote = usp-scratch
+['remote "usp-scratch"']
+    url = ssh://diogo.alves@shell.vision.ime.usp.br/scratch/diogo.alves/dvc-remote
