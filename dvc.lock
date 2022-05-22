@@ -1,29 +1,40 @@
 schema: '2.0'
 stages:
   train:
-    cmd: python train.py > train.log
+    cmd: python train.py
     deps:
     - path: data
-      md5: 540cbb0ff4cb922d1a423ad64ed29731.dir
+      md5: 41635dd2a6080a82129f5f857ef18088.dir
       size: 825038150
       nfiles: 776
     - path: train.py
-      md5: 4c2b5dc2f6ff38e2c7f5bde7d101bbcd
-      size: 48166
+      md5: 8b03eae24704084c4f64206a3aa7ff39
+      size: 48812
     outs:
-    - path: metrics-loss.csv
-      md5: c7deccfa588f9a290b90de917d57b56f
-      size: 234
-    - path: train.log
-      md5: e934d55ba040a27e9e23e488167a898b
-      size: 65491
+    - path: training_metrics.json
+      md5: 2a75bf7ecfb1e29157f268c04536a50d
+      size: 106
+    - path: training_metrics/scalars
+      md5: 5ee8c5eb4633c210725dbfd71ebf919f.dir
+      size: 852
+      nfiles: 8
   test:
     cmd: python test.py > test.log
     deps:
     - path: test.py
-      md5: e3c4d76134d322a79bcbdb61e04bd845
-      size: 48888
+      md5: 2549bfd26a10660f5b2c02e7e1ff0e05
+      size: 48883
     outs:
     - path: test.log
-      md5: 35c6e1d43005efd0ea5060cb65715149
-      size: 231
+      md5: 400487543a4cf84c3719dfc5437d4a04
+      size: 227
+  evaluate:
+    cmd: python evaluate.py
+    deps:
+    - path: evaluate.py
+      md5: 7cb49e45a5f867476bdb7af0eef8ab6c
+      size: 2566
+    outs:
+    - path: evaluation.json
+      md5: d1324e6b47da1f9d250062262e1fa975
+      size: 158

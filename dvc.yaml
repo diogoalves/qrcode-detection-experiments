@@ -1,16 +1,21 @@
 stages:
   train:
-    cmd: python train.py > train.log
+    cmd: python train.py
     deps:
     - data
     - train.py
-    outs:
-    - metrics-loss.csv
-    - train.log
-  test:
-    cmd: python test.py > test.log
+    metrics:
+      - training_metrics.json:
+          cache: false
+    plots:
+      - training_metrics/scalars:
+          cache: false
+  evaluate:
+    cmd: python evaluate.py
     deps:
-    - test.py
-    outs:
-    - test.log
+    - evaluate.py
+    metrics:
+    - evaluation.json:
+        cache: false    
+   
     
