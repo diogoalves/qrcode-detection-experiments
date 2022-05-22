@@ -18,9 +18,9 @@ live = Live('training_metrics')
 np.random.seed(1)
 
 DATASET = './data'
-RESULTS = '/scratch/diogo.alves/results/baseline'
+RESULTS = '/scratch/diogo.alves/results/more-training'
 batch_size = 8
-epochs = 100
+epochs = 3000
 
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 print('\nSetup complete!')
@@ -259,8 +259,8 @@ network.model.compile(
 )
 
 network.model.fit(train_generator,
-                        # steps_per_epoch = train_size // batch_size,
-                        steps_per_epoch = 50,
+                        steps_per_epoch = train_size // batch_size,
+                        # steps_per_epoch = 50,
                         epochs = epochs,
                         validation_data = valid_generator,
                         validation_steps = valid_size // batch_size,

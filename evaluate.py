@@ -14,7 +14,7 @@ live = Live('evaluation')
 np.random.seed(1)
 
 DATASET = 'data'
-RESULTS = '/scratch/diogo.alves/results/baseline'
+RESULTS = '/scratch/diogo.alves/results/more-training'
 batch_size = 8
 
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
