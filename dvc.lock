@@ -4,19 +4,19 @@ stages:
     cmd: python train.py
     deps:
     - path: data
-      md5: 540cbb0ff4cb922d1a423ad64ed29731.dir
-      size: 825038150
-      nfiles: 776
+      md5: dc4e0d11e2cc25a8d3af6309a95a6909.dir
+      size: 825492216
+      nfiles: 784
     - path: train.py
-      md5: 9fc7913dae4a3c23d2a4a6d123a2c17b
-      size: 10732
+      md5: 0cb47e4f09062344c2b7953b73e6c40a
+      size: 10738
     outs:
     - path: training_metrics.json
-      md5: b65ff92772819a39a7daff066fd17ec6
-      size: 100
+      md5: cb68472b4a16e6e98e9da0845bc8b762
+      size: 101
     - path: training_metrics/scalars
-      md5: cf4f928c62fa919e8402f22a8a368c0f.dir
-      size: 31471
+      md5: 4b6046f97dd65b98573990379355d2ae.dir
+      size: 986093
       nfiles: 8
   test:
     cmd: python test.py > test.log
