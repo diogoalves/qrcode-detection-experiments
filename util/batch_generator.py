@@ -200,8 +200,8 @@ class SubPartsBatchGenerator:
             except:
                 continue
 
-        object_boxes = [img_boxes.remove_out_of_image().cut_out_of_image() for img_boxes in object_boxes]
-        subpart_boxes = [img_boxes.remove_out_of_image().cut_out_of_image() for img_boxes in subpart_boxes]
+        object_boxes = [img_boxes.remove_out_of_image().clip_out_of_image() for img_boxes in object_boxes]
+        subpart_boxes = [img_boxes.remove_out_of_image().clip_out_of_image() for img_boxes in subpart_boxes]
 
         return images, object_boxes, subpart_boxes
 
@@ -486,3 +486,11 @@ def subparts_output_decoder(batch_output, network, conf_threshold = 0.5, nms_thr
         predicted_boxes.append(ia.BoundingBoxesOnImage(nms_boxes, shape = network.input_shape[:2]))
 
     return predicted_boxes
+
+
+def all_outputs_decode(batch_output, network, conf_threshold = 0.5, nms_threshold = 0.5): 
+    predicted_main = batch_output[1]
+    predicted_subparts = batch_output[0]
+    main_output_decoded = output_decoder(predicted_main, network, conf_threshold=conf_threshold, nms_threshold=nms_threshold)
+    subparts_output_decoded = output_decoder(predicted_subparts, network, conf_threshold=conf_threshold, nms_threshold=nms_threshold)
+    return (main_output_decoded, subparts_output_decoded)
