@@ -92,27 +92,27 @@ def recall(batch_ground_truth, batch_predictions, iou_threshold = 0.5):
 
     return float(TP) / total_positives
 
-def precision(batch_ground_truth, batch_predictions, iou_threshold = 0.5):
-    TP, total_predictions = 0, 0
+# def precision(batch_ground_truth, batch_predictions, iou_threshold = 0.5):
+#     TP, total_predictions = 0, 0
 
-    for ground_truth, predictions in zip(batch_ground_truth, batch_predictions):
-        ground_truth = ground_truth.bounding_boxes
+#     for ground_truth, predictions in zip(batch_ground_truth, batch_predictions):
+#         ground_truth = ground_truth.bounding_boxes
 
-        predictions = predictions.bounding_boxes
-        total_predictions += len(predictions)
-        predictions = sorted(predictions, key=lambda x: x.confidence, reverse=True)
+#         predictions = predictions.bounding_boxes
+#         total_predictions += len(predictions)
+#         predictions = sorted(predictions, key=lambda x: x.confidence, reverse=True)
 
-        matched = np.zeros(len(ground_truth))
+#         matched = np.zeros(len(ground_truth))
 
-        for pred in predictions:
-            iou = [pred.iou(gt) for gt in ground_truth]
-            i = np.argmax(iou)
+#         for pred in predictions:
+#             iou = [pred.iou(gt) for gt in ground_truth]
+#             i = np.argmax(iou)
 
-            if iou[i] >= iou_threshold and not matched[i]:
-                matched[i] = True
-                TP += 1
+#             if iou[i] >= iou_threshold and not matched[i]:
+#                 matched[i] = True
+#                 TP += 1
 
-    return float(TP) / total_predictions
+#     return float(TP) / total_predictions
 
 
 def false_positives(batch_ground_truth, batch_predictions, iou_threshold = 0.5):
@@ -143,6 +143,8 @@ def AP(batch_ground_truth, batch_predictions, iou_threshold = 0.5):
     total_positives = 0
 
     for ground_truth, predictions in zip(batch_ground_truth, batch_predictions):
+        if len(ground_truth) == 0:
+            continue
         ground_truth = ground_truth.bounding_boxes
         total_positives += len(ground_truth)
 
