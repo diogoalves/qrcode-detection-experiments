@@ -76,13 +76,13 @@ model.summary()
 
 
 #### TRAIN DATA
-train_qr_codes = pd.read_csv(f'{DATASET}/qr_codes_train.csv', dtype={'image_id': str, 'object_id': str})
-valid_qr_codes = pd.read_csv(f'{DATASET}/qr_codes_valid.csv', dtype={'image_id': str, 'object_id': str})
-test_qr_codes  = pd.read_csv(f'{DATASET}/qr_codes_test.csv',  dtype={'image_id': str, 'object_id': str})
+train_qr_codes = pd.read_csv(f'{DATASET}/v2_qr_codes_train.csv', dtype={'image_id': str, 'object_id': str})
+valid_qr_codes = pd.read_csv(f'{DATASET}/v2_qr_codes_valid.csv', dtype={'image_id': str, 'object_id': str})
+test_qr_codes  = pd.read_csv(f'{DATASET}/v2_qr_codes_test.csv',  dtype={'image_id': str, 'object_id': str})
 
-train_fips = pd.read_csv(f'{DATASET}/fips_train.csv', dtype={'image_id': str, 'object_id': str})
-valid_fips = pd.read_csv(f'{DATASET}/fips_valid.csv', dtype={'image_id': str, 'object_id': str})
-test_fips  = pd.read_csv(f'{DATASET}/fips_test.csv',  dtype={'image_id': str, 'object_id': str})
+train_fips = pd.read_csv(f'{DATASET}/v2_fips_train.csv', dtype={'image_id': str, 'object_id': str})
+valid_fips = pd.read_csv(f'{DATASET}/v2_fips_valid.csv', dtype={'image_id': str, 'object_id': str})
+test_fips  = pd.read_csv(f'{DATASET}/v2_fips_test.csv',  dtype={'image_id': str, 'object_id': str})
 
 batch_generator_train = SubPartsBatchGenerator(network)
 batch_generator_valid = SubPartsBatchGenerator(network)
