@@ -492,5 +492,5 @@ def all_outputs_decode(batch_output, network, conf_threshold = 0.5, nms_threshol
     predicted_main = batch_output[1]
     predicted_subparts = batch_output[0]
     main_output_decoded = output_decoder(predicted_main, network, conf_threshold=conf_threshold, nms_threshold=nms_threshold)
-    subparts_output_decoded = output_decoder(predicted_subparts, network, conf_threshold=conf_threshold, nms_threshold=nms_threshold)
+    subparts_output_decoded = subparts_output_decoder(predicted_subparts, network, conf_threshold=conf_threshold, nms_threshold=nms_threshold)
     return (main_output_decoded, subparts_output_decoded)
