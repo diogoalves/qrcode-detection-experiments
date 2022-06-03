@@ -76,13 +76,13 @@ model.summary()
 
 
 #### TRAIN DATA
-train_qr_codes = pd.read_csv(f'{DATASET}/v2_qr_codes_train.csv', dtype={'image_id': str, 'object_id': str})
-valid_qr_codes = pd.read_csv(f'{DATASET}/v2_qr_codes_valid.csv', dtype={'image_id': str, 'object_id': str})
-test_qr_codes  = pd.read_csv(f'{DATASET}/v2_qr_codes_test.csv',  dtype={'image_id': str, 'object_id': str})
+train_qr_codes = pd.read_csv(f'{DATASET}/qr_codes_train.csv', dtype={'image_id': str, 'object_id': str})
+valid_qr_codes = pd.read_csv(f'{DATASET}/qr_codes_valid.csv', dtype={'image_id': str, 'object_id': str})
+test_qr_codes  = pd.read_csv(f'{DATASET}/qr_codes_test.csv',  dtype={'image_id': str, 'object_id': str})
 
-train_fips = pd.read_csv(f'{DATASET}/v2_fips_train.csv', dtype={'image_id': str, 'object_id': str})
-valid_fips = pd.read_csv(f'{DATASET}/v2_fips_valid.csv', dtype={'image_id': str, 'object_id': str})
-test_fips  = pd.read_csv(f'{DATASET}/v2_fips_test.csv',  dtype={'image_id': str, 'object_id': str})
+train_fips = pd.read_csv(f'{DATASET}/fips_train.csv', dtype={'image_id': str, 'object_id': str})
+valid_fips = pd.read_csv(f'{DATASET}/fips_valid.csv', dtype={'image_id': str, 'object_id': str})
+test_fips  = pd.read_csv(f'{DATASET}/fips_test.csv',  dtype={'image_id': str, 'object_id': str})
 
 batch_generator_train = SubPartsBatchGenerator(network)
 batch_generator_valid = SubPartsBatchGenerator(network)
@@ -141,7 +141,8 @@ print(f'batch_y[0].shape={batch_y[0].shape}, batch_y[1].shape={batch_y[1].shape}
 
 network.model.fit(train_generator,
                         initial_epoch=initial_epoch,
-                        steps_per_epoch = train_size // BATCH_SIZE,
+                        # steps_per_epoch = train_size // BATCH_SIZE,
+                        steps_per_epoch = 50,
                         epochs = EPOCHS,
                         validation_data = valid_generator,
                         validation_steps = valid_size // BATCH_SIZE,
@@ -151,7 +152,8 @@ network.model.fit(train_generator,
                             DvcLiveCallback(path=f'training_metrics/{args["experiment"]}', resume=True),
                             ModelCheckpoint(
                                 filepath=f'{CHECKPOINTS}/model.{{epoch:06d}}.tf',
-                                save_freq=(train_size // BATCH_SIZE) * 10,
+                                # save_freq=(train_size // BATCH_SIZE) * 10,
+                                save_freq=50 * 10,
                                 verbose=1
                             ),
                             EvaluateMeanAP(
