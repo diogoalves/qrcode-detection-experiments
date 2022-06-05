@@ -1,0 +1,9 @@
+{
+    "step": 99,
+    "train_main_ap": 0.716875079000139,
+    "train_subparts_ap": 0.47785595988290125,
+    "val_main_ap": 0.676935689967777,
+    "val_subparts_ap": 0.4054476772194773,
+    "test_main_ap": 0.741572194671227,
+    "test_subparts_ap": 0.4010231848350399
+}
