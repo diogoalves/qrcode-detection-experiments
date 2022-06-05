@@ -10,7 +10,6 @@ from glob import glob
 
 from tensorflow.keras.utils import custom_object_scope
 from tensorflow.keras.callbacks import  ModelCheckpoint
-from tensorflow.keras.callbacks import Callback
 
 from util.metrics import AP, get_ppn_loss
 from util.network import SubParts_SSD_PPN_ResNet50
@@ -76,13 +75,13 @@ model.summary()
 
 
 #### TRAIN DATA
-train_qr_codes = pd.read_csv(f'{DATASET}/v2_qr_codes_train.csv', dtype={'image_id': str, 'object_id': str})
-valid_qr_codes = pd.read_csv(f'{DATASET}/v2_qr_codes_valid.csv', dtype={'image_id': str, 'object_id': str})
-test_qr_codes  = pd.read_csv(f'{DATASET}/v2_qr_codes_test.csv',  dtype={'image_id': str, 'object_id': str})
+train_qr_codes = pd.read_csv(f'{DATASET}/v3_qr_codes_train.csv', dtype={'image_id': str, 'object_id': str})
+valid_qr_codes = pd.read_csv(f'{DATASET}/v3_qr_codes_valid.csv', dtype={'image_id': str, 'object_id': str})
+test_qr_codes  = pd.read_csv(f'{DATASET}/v3_qr_codes_test.csv',  dtype={'image_id': str, 'object_id': str})
 
-train_fips = pd.read_csv(f'{DATASET}/v2_fips_train.csv', dtype={'image_id': str, 'object_id': str})
-valid_fips = pd.read_csv(f'{DATASET}/v2_fips_valid.csv', dtype={'image_id': str, 'object_id': str})
-test_fips  = pd.read_csv(f'{DATASET}/v2_fips_test.csv',  dtype={'image_id': str, 'object_id': str})
+train_fips = pd.read_csv(f'{DATASET}/v3_fips_train.csv', dtype={'image_id': str, 'object_id': str})
+valid_fips = pd.read_csv(f'{DATASET}/v3_fips_valid.csv', dtype={'image_id': str, 'object_id': str})
+test_fips  = pd.read_csv(f'{DATASET}/v3_fips_test.csv',  dtype={'image_id': str, 'object_id': str})
 
 batch_generator_train = SubPartsBatchGenerator(network)
 batch_generator_valid = SubPartsBatchGenerator(network)
