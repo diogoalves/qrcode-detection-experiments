@@ -2,7 +2,7 @@ import argparse
 import os
 import tensorflow as tf
 import numpy as np
-
+import random as python_random
 import pandas as pd
 
 from glob import glob
@@ -10,6 +10,7 @@ from glob import glob
 
 from tensorflow.keras.utils import custom_object_scope
 from tensorflow.keras.callbacks import  ModelCheckpoint
+from keras import backend as K
 
 from util.metrics import AP, get_ppn_loss
 from util.network import SubParts_SSD_PPN_ResNet50
@@ -32,8 +33,18 @@ CHECKPOINTS = f'/scratch/diogo.alves/checkpoints/{args["experiment"]}'
 BATCH_SIZE = 8
 EPOCHS = args['epochs']
 
+print('='*120)
+print(f'DATASET FOLDER: {DATASET}')
+print(f'CHECKPOINTS FOLDER: {CHECKPOINTS}')
+print(f'BATCH_SIZE: {BATCH_SIZE}')
+print(f'EPOCHS: {EPOCHS}')
+print('='*120)
+print()
+
 # Initialization
 np.random.seed(1)
+python_random.seed(1)
+tf.random.set_seed(1)
 if not  os.path.exists(CHECKPOINTS):
     os.makedirs(CHECKPOINTS)
 if not len(tf.config.list_physical_devices('GPU')) > 0:
@@ -49,29 +60,48 @@ network = SubParts_SSD_PPN_ResNet50(class_labels = ['qr_code'],
                                      input_shape = (480,480,3))
 
 checkpoints = sorted(glob(f'{CHECKPOINTS}/*.tf'))
+modelWeights = None
+model = network.model
+modelOptimizer = tf.keras.optimizers.Adam(1e-5)
+model.compile(
+    optimizer = modelOptimizer,
+    loss = {'subparts_output': get_ppn_loss(), 'main_output': get_ppn_loss()},
+    loss_weights = {'subparts_output': 1.0, 'main_output': 1.0}
+)
 
 if len(checkpoints) > 0:
     model_path = checkpoints[-1]
-    print(f'[Resuming training from checkpoint: {model_path}]')
+    
+    print()
+    print('='*120)
+    print(f'RESUMING TRAINING FROM CHECKPOINT: {model_path}]\n\n')
     with custom_object_scope({'resnet50': tf.keras.applications.resnet50,
                         'relu6': tf.keras.layers.ReLU(6.),
                         'ppn_loss': get_ppn_loss()}):
         model = tf.keras.models.load_model(model_path)
-        
+
         position = model_path.index('model.')
         initial_epoch = int(model_path[position+6:position+12])
         EPOCHS += initial_epoch
 
-else:
-    print('[No checkpoints found, starting a new training experiment]')
-    model = network.model
+        # live.set_step(initial_epoch)
 
-network.model.compile(
-    optimizer = tf.keras.optimizers.Adam(1e-4, decay=1e-4),
-    loss = {'subparts_output': get_ppn_loss(), 'main_output': get_ppn_loss()},
-    loss_weights = {'subparts_output': 1.0, 'main_output': 1.0}
-)
-model.summary()
+        modelWeights = model.get_weights()
+        modelOptimizer = model.optimizer
+        print("Learning rate before first fit:", model.optimizer.learning_rate.numpy())
+        # K.set_value(model.optimizer.learning_rate, 1e-05)
+        model.optimizer.learning_rate.assign(1e-05)
+        print(model.optimizer.learning_rate)
+        print("Learning rate before second fit:", model.optimizer.learning_rate.numpy())
+    
+    print('='*120)
+
+# if modelWeights:
+#     print(f'[Recovering weights...]')
+#     model.set_weights(modelWeights)
+#     mode.
+
+# model.summary()
 
 
 #### TRAIN DATA
@@ -86,6 +116,10 @@ test_fips  = pd.read_csv(f'{DATASET}/v3_fips_test.csv',  dtype={'image_id': str,
 batch_generator_train = SubPartsBatchGenerator(network)
 batch_generator_valid = SubPartsBatchGenerator(network)
 batch_generator_test  = SubPartsBatchGenerator(network)
+
+# train_qr_codes = train_qr_codes.iloc[0:1,:]
+# valid_qr_codes = valid_qr_codes.iloc[0:1,:]
+# test_qr_codes = test_qr_codes.iloc[0:1,:]
 
 batch_generator_train.add_data(dataset = train_qr_codes, subparts_dataset = train_fips, images_dir=f'{DATASET}/images')
 batch_generator_valid.add_data(dataset = valid_qr_codes, subparts_dataset = valid_fips, images_dir=f'{DATASET}/images')
@@ -138,10 +172,9 @@ batch_X, batch_y = next(train_generator)
 print(f'batch_X.shape={batch_X.shape}')
 print(f'batch_y[0].shape={batch_y[0].shape}, batch_y[1].shape={batch_y[1].shape}')
 
-network.model.fit(train_generator,
+model.fit(train_generator,
                         initial_epoch=initial_epoch,
-                        # steps_per_epoch = train_size // BATCH_SIZE,
-                        steps_per_epoch = 50,
+                        steps_per_epoch = train_size // BATCH_SIZE,
                         epochs = EPOCHS,
                         validation_data = valid_generator,
                         validation_steps = valid_size // BATCH_SIZE,
@@ -149,12 +182,11 @@ network.model.fit(train_generator,
                         max_queue_size = 200,
                         callbacks = [
                             DvcLiveCallback(path=f'training_metrics/{args["experiment"]}', resume=True),
-                            ModelCheckpoint(
-                                filepath=f'{CHECKPOINTS}/model.{{epoch:06d}}.tf',
-                                # save_freq=(train_size // BATCH_SIZE) * 10,
-                                save_freq=50 * 10,
-                                verbose=1
-                            ),
+                            # ModelCheckpoint(
+                            #     filepath=f'{CHECKPOINTS}/model.{{epoch:06d}}.tf',
+                            #     save_freq=(train_size // BATCH_SIZE) * 10,
+                            #     verbose=1
+                            # ),
                             EvaluateMeanAP(
                                 network,
                                 BATCH_SIZE, 
@@ -173,6 +205,7 @@ network.model.fit(train_generator,
                                     'X': test_X, 
                                     'y_obj': test_y_obj,
                                     'y_subparts':test_y_subparts
-                                }
+                                },
+                                checkpoint_path = f'{CHECKPOINTS}'
                             ),
                         ]) 

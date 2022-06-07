@@ -3,15 +3,17 @@ from .batch_generator import all_outputs_decode
 from .metrics import AP
 
 class EvaluateMeanAP(Callback):
-    def __init__(self, network, batch_size, live, train, valid, test):
+    def __init__(self, network, batch_size, live, train, valid, test, checkpoint_path):
         super(EvaluateMeanAP, self).__init__()
         self.best_valid_mAP = 0
+        self.best_test_mAP = 0
         self.network = network
         self.batch_size = batch_size
         self.live = live
         self.train = train
         self.valid = valid
         self.test = test
+        self.checkpoint_path = checkpoint_path
     
     def on_epoch_end(self, epoch, logs=None):
         train_y_pred = self.model.predict(self.train['X'], batch_size = self.batch_size, verbose = 0)
@@ -41,5 +43,11 @@ class EvaluateMeanAP(Callback):
             # print('Saving... ')
         
         print(f'train_main_ap: {train_main_ap.astype(float):.6}, train_subparts_ap: {train_subparts_ap.astype(float):.6}, val_main_ap: {val_main_ap.astype(float):.6}, val_subparts_ap: {val_subparts_ap.astype(float):.6}, test_main_ap: {test_main_ap.astype(float):.6}, test_subparts_ap: {test_subparts_ap.astype(float):.6}')
+        
+        if test_main_ap > self.best_test_mAP:
+            filename = f'{self.checkpoint_path}/model.{epoch:06d}.tf'
+            print(f'Saving... {filename}')
+            self.best_test_mAP = test_main_ap
+            self.model.save(filename, save_format='tf')
 
         self.live.next_step()
