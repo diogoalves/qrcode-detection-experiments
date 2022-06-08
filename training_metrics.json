@@ -1,5 +1,9 @@
 {
-    "step": 2999,
-    "val_main_ap": 0.8501775370478435,
-    "val_subparts_ap": 0.632892371326641
+    "step": 5,
+    "loss": 0.06701229512691498,
+    "subparts_output_loss": 0.03593182563781738,
+    "main_output_loss": 0.031080471351742744,
+    "val_loss": 0.03975307568907738,
+    "val_subparts_output_loss": 0.027799217030405998,
+    "val_main_output_loss": 0.011953863315284252
 }

@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 
 from glob import glob
+import cv2 as cv
 
 
 from tensorflow.keras.utils import custom_object_scope
@@ -13,7 +14,6 @@ live = Live('evaluation')
 
 np.random.seed(1)
 
-DATASET = 'data'
 RESULTS = '/scratch/diogo.alves/results/more-training'
 batch_size = 8
 
@@ -44,11 +44,11 @@ with custom_object_scope({'resnet50': tf.keras.applications.resnet50,
 
 
 
-test_qr_codes = pd.read_csv(f'{DATASET}/v2_qr_codes_test.csv', dtype={'image_id': str, 'object_id': str})
-test_fips = pd.read_csv(f'{DATASET}/v2_fips_test.csv', dtype={'image_id': str, 'object_id': str})
+test_qr_codes = pd.read_csv(f'test-images/src/qr_codes_offline_test.csv', dtype={'image_id': str, 'object_id': str})
+test_fips = pd.read_csv(f'test-images/src/fips_offline_test.csv', dtype={'image_id': str, 'object_id': str})
 
 batch_generator_test = SubPartsBatchGenerator(network)
-batch_generator_test.add_data(dataset = test_qr_codes, subparts_dataset = test_fips, images_dir=f'{DATASET}/images')
+batch_generator_test.add_data(dataset = test_qr_codes, subparts_dataset = test_fips, images_dir=f'test-images/src/images')
 
 test_generator, test_size = batch_generator_test.get_generator(batch_size = 1, shuffle = False, augmentation = False, encode_output = False)
 test_X, test_y_subparts, test_y_obj = [], [], []
@@ -67,23 +67,13 @@ y_pred = [
     output_decoder(y_pred[1], network, nms_threshold = 0.3)
 ]
 
-APs = [
-    AP(test_y_subparts, y_pred[0]),
-    AP(test_y_obj, y_pred[1])
-]
+headers = [ 'image_id', 'obj_detected','class', 'xmin', 'ymin', 'xmax', 'ymax']
 
-print('Test APs:', APs)
+for i in range(test_size):
+  img, subpart_boxes, obj_boxes = test_X[i], y_pred[0][i], y_pred[1][i]
 
-
-RECALL = recall(test_y_obj, y_pred[1])
-
-FALSE_POSITIVES = false_positives(test_y_obj, y_pred[1])
-
-live.log('test_main_ap', APs[1] )
-live.log('test_subparts_ap', APs[0] )
-live.log('test_recall', RECALL )
-live.log('test_false_positives', FALSE_POSITIVES)
-
-print(f'AP: {APs[1]}')
-print(f'RECALL: {RECALL}')
-print(f'FALSE POSITIVES: {FALSE_POSITIVES} / {len(test_y_obj)}')
+  img = obj_boxes.draw_on_image(img, size=6)
+  img = subpart_boxes.draw_on_image(img, size=4, color=[255,0,0])
+  filename = f'test-images/predicted/images/{test_qr_codes.iloc[i]["image_id"]}.jpg'
+  # cv.imwrite(f'test-images/predicted/image_%d.png'%i, img[..., [2,1,0]])
+  cv.imwrite(filename, img[..., [2,1,0]])
