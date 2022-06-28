@@ -14,13 +14,13 @@ The baseline is presented in the paper: An Evaluation of Deep Learning Technique
 
 **Result summary:**
 
-![Table 1. Experimental results on the test set, in Average Precision.](/report/img/00_readme_001.png "Table 1. Experimental results on the test set, in Average Precision.")
+![Table 1. Experimental results on the test set, in Average Precision.](/report/imgs/readme_001.png "Table 1. Experimental results on the test set, in Average Precision.")
 
 Of evaluated architectures the ResNet5 Subparts achieved the best mAP@0.5 (77%).
 
 Evaluating it against the FastQR work that used Viola-Jones framework.
 
-![Table 2. Comparison against FastQR.](/report/img/00_readme_002.png "Table 2 Comparison against FastQR.")
+![Table 2. Comparison against FastQR.](/report/imgs/readme_002.png "Table 2 Comparison against FastQR.")
 
 
 > L. Blanger and N. S. T. Hirata, "An Evaluation of Deep Learning Techniques for Qr Code Detection," 2019 IEEE International Conference on Image Processing (ICIP), 2019, pp. 1625-1629, doi: 10.1109/ICIP.2019.8803075.
@@ -32,10 +32,11 @@ Dataset: https://github.com/ImageU/QR_codes_dataset
 
 ## Exploration
 
-- [Idea 1 – Error analysis.](/report/01-erroranalysis.md)
-- [Idea 2 – Iterate on the data.](/report/02-iterateondata.md)
-- [Idea 3 – Train more.](/report/03-moretraining)
-- [Idea 4 – Iterate on the model.](/report/04-iterateonmodel.md)
+- [Idea 1 - Running baseline code.](/report/01-runningbaseline.md)
+- [Idea 2 – Error analysis.](/report/02-erroranalysis.md)
+- [Idea 3 – Iterate on the data.](/report/03-iterateondata.md)
+- [Idea 4 – Train more.](/report/04-moretraining)
+- [Idea 5 – Iterate on the model.](/report/05-iterateonmodel.md)
 
 
 ## Comparative results
