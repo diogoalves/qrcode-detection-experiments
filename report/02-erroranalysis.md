@@ -43,10 +43,10 @@ From them, 115 qrcodes are under this limit in only 38 images.
 
 It seems that the ground truth annotations have some inconsistencies.
 
-### Missing qrocode annoatations
+### Missing qrocode annotations
 
-![Missing qrocode annoatations 1.](/report/imgs/erroranalysis_004.png "Missing qrocode annoatations 1.")
-![Missing qrocode annoatations 2.](/report/imgs/erroranalysis_005.png "Missing qrocode annoatations 2.")
+![Missing qrocode annotations 1.](/report/imgs/erroranalysis_004.png "Missing qrocode annotations 1.")
+![Missing qrocode annotations 2.](/report/imgs/erroranalysis_005.png "Missing qrocode annotations 2.")
 
 ### Loose bounding boxes
 ![Loose bounding boxes.](/report/imgs/erroranalysis_006.png "Loose bounding boxes")
