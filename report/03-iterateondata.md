@@ -70,6 +70,9 @@ All images were shooted using a Xiaomi Mi 9 SE phone with 3000x4000px (12MP) res
 
 Added 168 images of natural scenes. Many of them with small qrcodes.
 
+![Dataset v3 sample.](/report/imgs/iterateondata_015.png "Dataset v3 sample.")
+
+
 
 # Results
 The raw data is available in:
@@ -94,6 +97,11 @@ But, running the same baseline code on dataset v3 apparently made no improvement
 
 ![Dataset v3 results.](/report/imgs/iterateondata_011.png "Dataset v3 results.")
 
+I was a little depressed 😥 when I didn't see an improvement when using the dataset v3.
+
+Anyway I started to think that the model is the underfitting regimen.
+
+
 
 # DVC toolset
 DVC library was used to help track changes to the dataset.
@@ -104,7 +112,7 @@ In addition, the DVCLive library was used to help log optimization results.
 
 > DVCLive is a Python library for logging machine learning metrics and other metadata in simple file formats, which is fully compatible with DVC. 
 
-![DVC matches the right versions of data, code, and models for you 💘.](/report/imgs/iterateondata_012.png "DVC matches the right versions of data, code, and models for you 💘.")
+![DVC helps matching versions of data, code, and models.](/report/imgs/iterateondata_012.png "DVC helps matching versions of data, code, and models.")
 
 
 
