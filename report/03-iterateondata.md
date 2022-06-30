@@ -72,6 +72,16 @@ Added 168 images of natural scenes. Many of them with small qrcodes.
 
 ![Dataset v3 sample.](/report/imgs/iterateondata_015.png "Dataset v3 sample.")
 
+## Annotation workflow
+
+1. Take photos with a smartphone.
+2. Upload to aGoogle Photos album in the cloud.
+3. Clean too similar and not interesting images.
+4. Download images to my local computer.
+5. Generate a list that informs how many qrcodes there are in each image.
+6. From this list, generate annotations templates for each image. Those templates will have the requested bounding boxes with propper class name and object identification.
+
+![Annotation generated template.](/report/imgs/iterateondata_016.png "Annotation generated template.")
 
 
 # Results

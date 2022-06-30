@@ -35,7 +35,7 @@ Dataset: https://github.com/ImageU/QR_codes_dataset
 - [Idea 1 - Running baseline code.](/report/01-runningbaseline.md)
 - [Idea 2 – Error analysis.](/report/02-erroranalysis.md)
 - [Idea 3 – Iterate on the data.](/report/03-iterateondata.md)
-- [Idea 4 – Train more.](/report/04-moretraining)
+- [Idea 4 – Train more.](/report/04-moretraining.md)
 - [Idea 5 – Iterate on the model.](/report/05-iterateonmodel.md)
 
 
