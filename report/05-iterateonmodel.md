@@ -36,6 +36,18 @@ Besides that the tutorial utilizes YOLOv5 small version and I was curious to eva
 
 Pause to organize the dataset in roboflow and the evaluation code of the different architecture sizes.
 
+# Download and install YOLOv5
+
+YOLOv5 is available to download from github repository. Opensource code with GNU-General Public License v3.
+
+The model is still in active development.
+The tutorial uses a specific version, marked by a commit tag.
+
+I tried also downloading the github head, with the most recent updates. In the GitHub head version, I noted three things: The availability of more command line parameters, the integration with [Weights and Bias](https://wandb.ai/diogoalves/YOLOv5) API (experiment management tool) and the standard training metrics output that changed from a txt file to a csv file.
+
+Something that catches my attention was about the usability of the model. Clear configuration files and command-line scripts with good descriptions. It is something that I want to look at again to learn its design patterns.
+
+
 # Roboflow dataset management tool
 
 The tutorial uses Roboflow to generate annotations in YOLOv5's own format. 
@@ -63,6 +75,8 @@ When generating a dataset version, Roboflow can create more images using data au
 
 # Results
 
+Raw results files are available in https://github.com/diogoalves/qrcode-detection-experiments/tree/main/yolov5_metrics .
+
 Architecture size initial exploration.
 
 Tried 100 epochs on each architecture size x dataset.
@@ -74,6 +88,7 @@ Tried 100 epochs on each architecture size x dataset.
 - Larger architectures tend to perform better, but not always. Overfitting?
 - Datasets with fips and qrcodes seem to work better than ones with just qrcodes.
 - The dataset with more images seems to improve the result on the simpler network.
+- It is possible to see the difference in used training memory when changing image and architecture sizes. Starting with 0.887G in baseline-416 yolov5s and going up to 8.02G in baseline-oneclass-640-more168images yolo5x.
 
 
 After that, I tried using pretrained weights and fine-tuning with our dataset for more 300 epochs. At this point we achieved **AP@.5 95.3% in the test set**.
