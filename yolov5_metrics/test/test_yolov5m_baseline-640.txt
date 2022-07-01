@@ -1,0 +1,7 @@
+Namespace(weights=['runs/train/yolov5m_baseline-640/weights/best.pt'], data='../roboflow/baseline-640/data.yaml', batch_size=32, img_size=640, conf_thres=0.001, iou_thres=0.6, task='test', device='', single_cls=False, augment=False, verbose=False, save_txt=False, save_hybrid=False, save_conf=False, save_json=False, project='runs/test', name='yolov5m_baseline-640', exist_ok=False)
+Fusing layers... 
+                 all          99         593       0.958       0.881       0.925       0.712
+                fips          99         435       0.972       0.876       0.919       0.681
+             qr_code          99         158       0.945       0.886       0.931       0.742
+Speed: 14.0/2.0/16.0 ms inference/NMS/total per 640x640 image at batch-size 32
+Results saved to runs/test/yolov5m_baseline-640
