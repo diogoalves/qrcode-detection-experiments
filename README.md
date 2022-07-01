@@ -41,5 +41,6 @@ Dataset: https://github.com/ImageU/QR_codes_dataset
 
 ## Comparative results
 
+ - [Validation set comparation](/report/assets/comparative_results.pdf)
 
 
